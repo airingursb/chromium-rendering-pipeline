@@ -25,23 +25,7 @@ css: unocss
 
 # Chromium Renderer Pipeline
 
-从接收字节码到像素的诞生
-
-<div class="pt-12">
-  <span @click="$slidev.nav.next" class="px-2 py-1 rounded cursor-pointer" hover="bg-white bg-opacity-10">
-    Press Space for next page <carbon:arrow-right class="inline"/>
-  </span>
-</div>
-
-<div class="abs-br m-6 flex gap-2">
-  <button @click="$slidev.nav.openInEditor()" title="Open in Editor" class="text-xl icon-btn opacity-50 !border-none !hover:text-white">
-    <carbon:edit />
-  </button>
-  <a href="https://github.com/slidevjs/slidev" target="_blank" alt="GitHub"
-    class="text-xl icon-btn opacity-50 !border-none !hover:text-white">
-    <carbon-logo-github />
-  </a>
-</div>
+从字节码到像素的诞生
 
 <!--
 The last comment block of each slide will be treated as slide notes. It will be visible and editable in Presenter Mode along with the slide. [Read more in the docs](https://sli.dev/guide/syntax.html#notes)
@@ -49,19 +33,69 @@ The last comment block of each slide will be treated as slide notes. It will be 
 
 ---
 
-# What is Slidev?
+# Introduce to Blink
 
-Slidev is a slides maker and presenter designed for developers, consist of the following features
+Blink 是 Web 的渲染引擎，Chromium 和 Android Webview 都是用 Blink 作为渲染引擎。
 
-- 📝 **Text-based** - focus on the content with Markdown, and then style them later
-- 🎨 **Themable** - theme can be shared and used with npm packages
-- 🧑‍💻 **Developer Friendly** - code highlighting, live coding with autocompletion
-- 🤹 **Interactive** - embedding Vue components to enhance your expressions
-- 🎥 **Recording** - built-in recording and camera view
-- 📤 **Portable** - export into PDF, PNGs, or even a hostable SPA
-- 🛠 **Hackable** - anything possible on a webpage
+<img class="h-40" border="rounded" src="https://airing.ursb.me/image%2Fblog%2F717306-20180919114752433-1539598716.png?max_age=25920000" />
+
+
+Blink 包括以下特性：
+
+- 实现了 Web 平台的规范（也就是 [HTML 标准](https://html.spec.whatwg.org/multipage/?)），包括 DOM，CSS 和 WebIDL；  
+- 内嵌 V8 运行 JavaScript；  
+- 通过底层的网络栈请求资源；  
+- 构建 DOM 树；  
+- 计算样式和排版；  
+- 内嵌 [Chrome Compositor](https://chromium.googlesource.com/chromium/src/+/HEAD/cc/README.md) 用于绘图；  
+
+---
+
+# Introduce to Blink
+
+- controller/: 一些使用 core/ 和 modules/ 的高级库。比如，devtools 的前端。
+- core/ and bindings/core: core/ 实现了跟 DOM 紧密相关的特性。bindings/core 属于 core/ 的一部分，bindings 目录独立是因为它和 V8 强相关。
+- modules/ and bindings/modules: modules/ 实现一些与 DOM 无关的特性，如 WebAudio，IndexDB 等。bindings/modules/ 属于 modules/ 的一部分, bindings 目录独立是因为它和 V8 强相关。
+- platform/: Blink 的低阶功能集合，从庞大的 core/ 中分解出来，包括 geometry 和 graphics 等相关的功能。
+- extensions/
+- public/web
+- public/platform
+- public/common
+- //base: chromium 基础库，基础库的源码解读可见 [Chromium //base](https://docs.google.com/document/d/13zOvNpBjUfI89HehtVl7CWQT-huJAUcvb7fNbse3fdc/edit#)
+- //cc: chromium composite
+- V8: JavaScript 解释器
+
+---
+
+# Goal
+
+渲染管线的目的是将 WebContent 渲染到屏幕上，它会将 HTML 的内容经过层层处理，最后通过 Open GL 操作显卡硬件驱动，将 HTML 内容光栅化输出到屏幕上。
+
+<img class="h-80" border="rounded" src="https://airing.ursb.me/image%2Fblog%2F20220814160559%402x.png" />
+
+---
+
+# Renderer Pipeline
+
+<img border="rounded" src="/images/full-rendering-pipeline.png" />
 
 <br>
+
+<div grid="~ cols-4 gap-2" m="-t-2">
+  <span>1. Parsing</span>
+  <span>2. Style</span>
+  <span>3. Layout</span>
+  <span>4. Composting</span>
+  <span>5. Paint</span>
+  <span>6. Commit</span>
+  <span>7. Tiling</span>
+  <span>8. Raster</span>
+  <span>9. Activate</span>
+  <span>10. Submit</span>
+  <span>11. Draw</span>
+  <span>12. Display</span>
+</div>
+
 <br>
 
 Read more about [Why Slidev?](https://sli.dev/guide/why)
@@ -84,6 +118,22 @@ h1 {
 </style>
 
 ---
+
+# Parse
+
+---
+
+
+# DOM
+
+---
+
+
+
+# Mojo
+
+---
+
 
 # Navigation
 
